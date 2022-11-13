@@ -1,0 +1,143 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "Crowd Sensing Weather",
+    "description" : "This applications allows users to upload the weather in their location. The weather is then calculated depending on the users' information",
+    "termsOfService" : "https://crowdweather.spilab.es/terms",
+    "contact" : {
+      "name" : "Crowd Sensing Weather",
+      "url" : "https://crowdweather.spilab.es",
+      "email" : "jberolm@unex.es"
+    },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/ISTUEx/CrowdWeather/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "paths" : {
+    "/temp" : {
+      "post" : {
+        "tags" : [ "Temperature" ],
+        "summary" : "This method stores a new value for the temepature sensed by a user in an specific city.",
+        "operationId" : "postTemp",
+        "requestBody" : {
+          "description" : "Add a new temperature.",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Temperature"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful response"
+          },
+          "404" : {
+            "description" : "Not found response",
+            "content" : {
+              "text/plain" : {
+                "schema" : {
+                  "title" : "Endpoint not found",
+                  "type" : "string",
+                  "example" : "Not found"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/temp/{city}" : {
+      "get" : {
+        "tags" : [ "Temperature" ],
+        "summary" : "This method gets the average temperature in a city during the last hour.",
+        "operationId" : "getTempByCity",
+        "parameters" : [ {
+          "name" : "city",
+          "in" : "path",
+          "description" : "Name of the city to which calculate the temperature",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "Cáceres"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Temperature"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found response",
+            "content" : {
+              "text/plain" : {
+                "schema" : {
+                  "title" : "Endpoint not found",
+                  "type" : "string",
+                  "example" : "Not found"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Temperature" : {
+        "type" : "object",
+        "properties" : {
+          "city" : {
+            "type" : "string",
+            "example" : "Cáceres"
+          },
+          "time" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2017-07-21T17:32:28Z"
+          },
+          "temperature" : {
+            "type" : "number",
+            "format" : "double",
+            "example" : 27
+          }
+        },
+        "xml" : {
+          "name" : "temperature"
+        }
+      }
+    },
+    "responses" : {
+      "404" : {
+        "description" : "Not found response",
+        "content" : {
+          "text/plain" : {
+            "schema" : {
+              "title" : "Endpoint not found",
+              "type" : "string",
+              "example" : "Not found"
+            }
+          }
+        }
+      }
+    }
+  }
+}
